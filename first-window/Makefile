@@ -17,9 +17,8 @@ BIN_DIR   = bin
 # Sources
 CPP_SOURCES = $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.cpp))
 C_SOURCES   = $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c))
-SOURCES = $(CPP_SOURCES) $(C_SOURCES)
 
-# Create mirrored object paths: src/main.cpp → build/src/main.o
+# Object files (mirror folder structure)
 OBJECTS = $(patsubst %.cpp,$(BUILD_DIR)/%.o,$(CPP_SOURCES)) \
           $(patsubst %.c,$(BUILD_DIR)/%.o,$(C_SOURCES))
 
@@ -40,14 +39,17 @@ $(TARGET): $(OBJECTS)
 
 # Compile C++
 $(BUILD_DIR)/%.o: %.cpp
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Compile C
 $(BUILD_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-run: all
-	./$(TARGET)
+run:
+	@make -s all
+	@./$(TARGET)
 
 clean:
 	rm -rf $(BUILD_DIR) $(BIN_DIR)

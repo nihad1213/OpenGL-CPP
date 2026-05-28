@@ -3,7 +3,41 @@
 #include <iostream>
 
 int main() {
+    
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize glfw!" << std::endl;
+        return -1; 
+    }
 
-    std::cout << "test";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    GLFWwindow *window = glfwCreateWindow(800, 600, "First Line", NULL, NULL);
+
+    if (!window) {
+        std::cerr << "Failed to create window!" << std::endl; 
+        glfwTerminate();
+        return -1;
+    }
+
+    glfwMakeContextCurrent(window);
+    
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "Failed to initialize GLAD!" << std::endl;
+        return -1;
+    }
+
+
+    while (!glfwWindowShouldClose(window)) {
+        glClearColor(1.0f, 0.2f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
+
     return 0;
 }

@@ -4,6 +4,12 @@
 
 int main() {
     
+    GLfloat vertices[] = {
+        700, 100, 0,
+        900, 100, 0
+    };
+
+
     if (!glfwInit()) {
         std::cerr << "Failed to initialize glfw!" << std::endl;
         return -1; 
@@ -30,8 +36,13 @@ int main() {
 
 
     while (!glfwWindowShouldClose(window)) {
-        glClearColor(1.0f, 0.2f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glVertexPointer(3, GL_FLOAT, 0, vertices);
+        glDrawArrays(GL_LINES, 0, 2);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
